@@ -1,3 +1,4 @@
+
 import os
 import sys
 import json
@@ -5,23 +6,25 @@ import re
 from pathlib import Path
 
 import streamlit as st
+
+# Install required packages before imports
+try:
+    import google
+except ImportError:
+    st.error("Installing required packages...")
+    os.system(f"{sys.executable} -m pip install google-api-python-client google-auth google-auth-oauthlib google-auth-httplib2")
+    st.rerun()
+
+# Now import Google packages
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
-# Install required packages if not already installed
-try:
-    import streamlit
-    import google.oauth2
-    import googleapiclient
-except ImportError:
-    st.error("Installing required packages...")
-    os.system(f"{sys.executable} -m pip install streamlit google-api-python-client")
-    st.rerun()
 
 # Configuration - Change these values to your Google Sheet
 SPREADSHEET_ID = "1_DiX8jgahLhkLmIIEXXkOlTMkXMYyf1hj3FRRodS8RQ"  # Extract from your Google Sheets URL
 SHEET_NAME = "Templates"  # Name of the sheet tab
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
+
 
 # Path for credentials (this will be handled differently in Streamlit Cloud)
 CREDENTIALS_PATH = Path("service_account.json")
